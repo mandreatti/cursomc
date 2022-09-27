@@ -15,6 +15,12 @@
 	<name>cursomc</name>
 	<description>Demo project for Spring Boot</description>
 	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -82,10 +88,6 @@
 
 	</dependencies>
 	
-	<properties>
-   		 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	
 	<build>
 		<plugins>
 			<plugin>
@@ -96,7 +98,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
 			</plugin>
 		</plugins>
 	</build>
