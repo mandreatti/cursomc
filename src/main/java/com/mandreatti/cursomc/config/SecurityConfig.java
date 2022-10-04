@@ -1,17 +1,17 @@
 package com.mandreatti.cursomc.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.mandreatti.cursomc.security.JWTAutenthicationFilter;
+import com.mandreatti.cursomc.security.JWTAuthorizationFilter;
 import com.mandreatti.cursomc.security.JWTUtil;
 
 @Configuration
@@ -50,41 +51,32 @@ public class SecurityConfig {
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
 	        return authenticationConfiguration.getAuthenticationManager();
 	    }
-		 
-	 @Bean
-	 public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		 return new BCryptPasswordEncoder();
-	 }
-		    
-		    
+		      
 
 	 @Bean
 	 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	    	    	
 		 http
-	        .cors().and().csrf().disable()
-	        .addFilter(new  JWTAutenthicationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil))
+	        .cors().and().csrf().disable() 
 	        .authorizeRequests()
 	        .antMatchers("/h2-console/*").permitAll()
 	        .antMatchers(PUBLIC_MATCHERS).permitAll()
             .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-            .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/test/**").permitAll()
-            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .anyRequest().authenticated().and()
+         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+         	.and()
+		    .addFilter(new  JWTAutenthicationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil))
+		 	.addFilter(new  JWTAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil, userDetailsService));
 	        
 
 	        return http.build();
 	 }
-	    
-	
-
+	 
 	 @Bean
-	 public WebSecurityCustomizer webSecurityCustomizer() {
-		 return (web) -> web.ignoring()
-	                .antMatchers("/h2-console/*",
-	                        "/configuration/**",
-	                        "/swagger-resources/**");
-	    }
+	 public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		 return new BCryptPasswordEncoder();
+	 }
+	    
 	 
 	 @Bean
 		CorsConfigurationSource corsConfigurationSource() {
