@@ -62,7 +62,7 @@ public class SecurityConfig {
 	        .antMatchers("/h2-console/*").permitAll()
 	        .antMatchers(PUBLIC_MATCHERS).permitAll()
             .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-            .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_POST).permitAll()
+            .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
             .anyRequest().authenticated().and()
          	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
          	.and()
