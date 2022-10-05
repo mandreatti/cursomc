@@ -44,8 +44,11 @@ public class SecurityConfig {
 	private static final String[] PUBLIC_MATCHERS_GET = {
 				"/produtos/**",
 				"/categorias/**",
-				"/clientes/**"
 	}; 
+	
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/clientes/**"
+};
 		
 	 @Bean
 	    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -62,6 +65,7 @@ public class SecurityConfig {
 	        .antMatchers("/h2-console/*").permitAll()
 	        .antMatchers(PUBLIC_MATCHERS).permitAll()
             .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+            .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_POST).permitAll()
             .anyRequest().authenticated().and()
          	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
          	.and()
