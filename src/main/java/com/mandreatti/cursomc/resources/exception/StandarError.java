@@ -3,16 +3,26 @@ package com.mandreatti.cursomc.resources.exception;
 import java.io.Serializable;
 
 public class StandarError implements Serializable {
-	
 	private static final long serialVersionUID = 1L;
+	
+	private Long timestamp;
 	private Integer status;
-	private String msg;
-	private Long timeStump;
-	public StandarError(Integer status, String msg, Long timeStump) {
+	private String error;
+	private String message;
+	
+	public StandarError(Long timestamp, Integer status, String error, String message, String path) {
 		super();
+		this.timestamp = timestamp;
 		this.status = status;
-		this.msg = msg;
-		this.timeStump = timeStump;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+	}
+	public Long getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 	public Integer getStatus() {
 		return status;
@@ -20,19 +30,25 @@ public class StandarError implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public String getMsg() {
-		return msg;
+	public String getError() {
+		return error;
 	}
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setError(String error) {
+		this.error = error;
 	}
-	public Long getTimeStump() {
-		return timeStump;
+	public String getMessage() {
+		return message;
 	}
-	public void setTimeStump(Long timeStump) {
-		this.timeStump = timeStump;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	private String path;
 	
 
 }
